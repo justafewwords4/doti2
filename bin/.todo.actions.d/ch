@@ -1,0 +1,74 @@
+#!/bin/env python3
+import sys
+import os
+
+
+PRIORIDADES = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]
+
+
+def ayuda():
+    """Imprime la ayuda para el programa"""
+    ayy = """
+    Cómo usar:
+
+        t ch a b
+            Convierte todas las prioridades A en B
+
+        t ch b a
+            Convierte todas las prioridades B en A
+
+        Solo acepta las siguientes prioridades: [A, B, C, D, E, F, G, H, I, J, K, L, M]
+        IMPORTANTE: Las letras en el archivo deben ser mayúsculas
+    """
+    print(ayy)
+    sys.exit(1)
+
+
+def main():
+    """Aquí tratamos todo el embrollo"""
+
+    # comprobar que hay 4 parámetros
+    if len(sys.argv) != 4:
+        ayuda()
+
+    prioridad1 = str(sys.argv[2])
+    prioridad2 = str(sys.argv[3])
+
+    prioridad1 = prioridad1.upper()
+    prioridad2 = prioridad2.upper()
+
+    if prioridad1 not in PRIORIDADES or prioridad2 not in PRIORIDADES:
+        ayuda()
+
+    TODO_DIR = ""
+    if 'TODO_DIR' in os.environ:
+        TODO_DIR = os.environ['TODO_DIR']
+    else:
+        print("No existe la variable TODO_DIR")
+        sys.exit(1)
+
+    if not TODO_DIR.endswith("/"):
+        TODO_DIR += "/"
+
+    TODO_FILE = TODO_DIR + "todo.txt"
+
+    with open(TODO_FILE) as f:
+        # devuelve las lineas en formato lista
+        lineas = f.readlines()
+
+    buscar = f"({prioridad1})"
+    reemplazar_por = f"({prioridad2})"
+
+    nuevas_lineas = []
+    for linea in lineas:
+        # reemplaza las prioridades
+        nueva_linea = linea.replace(buscar, reemplazar_por)
+        nuevas_lineas.append(nueva_linea)
+
+    with open(TODO_FILE, "w", encoding="utf8") as f:
+        for nueva_linea in nuevas_lineas:
+            f.write(nueva_linea)
+
+
+if __name__ == "__main__":
+    main()

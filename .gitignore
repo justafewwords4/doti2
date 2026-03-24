@@ -1,0 +1,17 @@
+**/__pycache__/
+# **/.local/share/
+.goutput*
+openbox-mythemes/.config/xpad/.goutput*
+content*
+info*
+openbox-mythemes/.config/xpad/content-D9E812
+openbox-mythemes/.config/xpad/info-7BF812
+lazy-lock.json
+auto-save-list
+eln-cache
+elpa
+transient
+config.el
+recentf
+tramp
+ac-comphist*

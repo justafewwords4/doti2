@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PARAMETROS="-avzh --mkpath --exclude venv --exclude dist --exclude .git/ --exclude node_modules "
+enter=$'\n'
+echo "$enter/home/felipe/sites/ /run/media/felipe/TOCHIBA/sites/$enter"
+# rsync -avzh --exclude venv --exclude dist --exclude .git/ --exclude node_modules /home/felipe/sites/ /run/media/felipe/TOCHIBA/sites/
+rsync $PARAMETROS /home/felipe/sites/ /run/media/felipe/TOCHIBA/sites/
+echo "$enter/home/felipe/Documents/ /run/media/felipe/TOCHIBA/Documents/$enter"
+rsync $PARAMETROS /home/felipe/Documents/ /run/media/felipe/TOCHIBA/Documents/
+echo "$enter/home/felipe/Pictures/ /run/media/felipe/TOCHIBA/Pictures/$enter"
+rsync $PARAMETROS /home/felipe/Pictures/ /run/media/felipe/TOCHIBA/Pictures/
+echo "$enter/home/felipe/dev/ /run/media/felipe/TOCHIBA/dev/$enter"
+rsync $PARAMETROS /home/felipe/dev/ /run/media/felipe/TOCHIBA/dev/
+echo "$enter/home/felipe/Music/ /run/media/felipe/TOCHIBA/Music/$enter"
+rsync $PARAMETROS /home/felipe/Music/ /run/media/felipe/TOCHIBA/Music/
+echo "$enter/home/felipe/Dropbox/kanban/ /run/media/felipe/TOCHIBA/kanban/$enter"
+rsync $PARAMETROS /home/felipe/Dropbox/kanban/ /run/media/felipe/TOCHIBA/kanban/
+echo "$enter/home/felipe/.local/share/jrnl/ /run/media/felipe/TOCHIBA/jrnl/$enter"
+rsync $PARAMETROS /home/felipe/.local/share/jrnl/ /run/media/felipe/TOCHIBA/jrnl/
+echo "$enter/home/felipe/bovedas/ /run/media/felipe/TOCHIBA/bovedas/$enter"
+rsync $PARAMETROS /home/felipe/bovedas/ /run/media/felipe/TOCHIBA/bovedas/
+echo "$enter/home/felipe/.hledger.journal /run/media/felipe/TOCHIBA/hledger.journal$enter"
+rsync $PARAMETROS /home/felipe/.hledger.journal /run/media/felipe/TOCHIBA/hledger.journal
+# rsync -avzh --exclude dist --exclude .git* --exclude node_modules /home/felipe/.config/awesome/rc.lua /run/media/felipe/TOCHIBA/config/awesome/rc.lua

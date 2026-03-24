@@ -1,0 +1,14 @@
+layout horizontal
+
+# first kitty window
+
+new_tab
+launch --title "WORKING" --cwd ~/dev/django/CierreSemanal/ zsh -c "source .venv/bin/activate && nvim"
+focus
+
+new_tab
+launch --title "COMMAND" --cwd ~/dev/django/CierreSemanal/ zsh -i
+
+new_tab
+launch --title "RUNNING" --cwd ~/dev/django/CierreSemanal/ zsh -c "export DJANGO_SETTINGS_MODULE='report.settings.local' && source .venv/bin/activate && cd report && python manage.py up_all"
+

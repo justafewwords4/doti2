@@ -1,0 +1,14 @@
+[user]
+	name = Felipe
+	email = 104157442+justafewwords4@users.noreply.github.com
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	last = log -1 HEAD
+	log = log --pretty=online

@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import os
+
+import typer
+
+app = typer.Typer()
+
+
+@app.command()
+def make_pdf(extension: str, output: str):
+    """Mueve todos los archivos con la extensión dada al archivo output"""
+    os.system(f"convert *.{extension} {output}-score-key.pdf")
+
+
+if __name__ == "__main__":
+    app()

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+DIRECTORIO="/home/felipe/tmp/"
+IMAGE="image.png"
+OUTPUT="output"
+PBCOPY="/home/felipe/bin/pbcopy.sh"
+
+grim -g "$(slurp)" ${DIRECTORIO}${IMAGE}
+tesseract ${DIRECTORIO}${IMAGE} ${DIRECTORIO}${OUTPUT}
+cat ${DIRECTORIO}${OUTPUT}.txt | wl-copy
+rm ${DIRECTORIO}${IMAGE}
+rm ${DIRECTORIO}${OUTPUT}.txt

@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+import typer
+import os
+
+app = typer.Typer()
+
+@app.command()
+def rotate(file_name:str, degrees: int=-90):
+    """Rota file_name en los grados dados"""
+    os.system(f"convert {file_name} -rotate {degrees} {file_name}")
+
+if __name__=="__main__":
+    app()

@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+
+import os
+from datetime import date, timedelta
+
+import fina.aire as aire
+import fina.autos as autos
+import fina.ayuda as ayuda
+import fina.bancos as bancos
+import fina.casa as casa
+import fina.depto as depto
+import fina.despensa as despensa
+import fina.educa as educa
+import fina.efe as efe
+import fina.otros as otros
+import fina.r as r
+import fina.real as real
+import fina.restaurante as restaurante
+import fina.salud as salud
+import typer
+from rich import print
+
+now = date.today()
+
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+
+app = typer.Typer(context_settings=CONTEXT_SETTINGS, no_args_is_help=True)
+
+app.add_typer(efe.app, name="efe")
+app.add_typer(r.app, name="repor")
+app.add_typer(aire.app, name="taire")
+app.add_typer(despensa.app, name="despensa")
+app.add_typer(restaurante.app, name="restaurante")
+app.add_typer(casa.app, name="casa")
+app.add_typer(bancos.app, name="bancos")
+app.add_typer(real.app, name="real")
+app.add_typer(ayuda.app, name="ayuda")
+app.add_typer(depto.app, name="depto")
+app.add_typer(salud.app, name="salud")
+app.add_typer(educa.app, name="educa")
+app.add_typer(otros.app, name="otros")
+app.add_typer(autos.app, name="autos")
+
+
+## Inician los comandos de reportes
+
+extra_commands = " --pretty"
+
+
+if __name__ == "__main__":
+    app()

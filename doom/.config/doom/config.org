@@ -1,0 +1,96 @@
+#+title: Config
+
+* UI
+#+begin_src emacs-lisp
+;; (setq doom-theme 'doom-one)
+(setq doom-theme 'doom-one)
+(setq doom-font (font-spec :size 18))
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type `relative)
+(setq org-ellipsis " ⤷")
+(setq org-directory "~/Sync/org")
+#+end_src
+
+* Org Mode Stuff
+#+begin_src emacs-lisp :tangle yes
+(after! org
+(setq org-todo-keywords
+    '((sequence "REPEAT(r)" "NEXT(n)" "TODO(t)"  "WAITING(w)" "SOMEDAY(s)" "PROJ(p)" "FIX(f)" "|" "DONE(d)" "CANCELLED(c)")))
+(setq org-deadline-warning-days 4))
+
+(after! org
+(setq org-todo-keyword-faces
+      '(("NEXT"      . (:foreground "#FA812F" :weight bold))
+        ("TODO"      . (:foreground "#6D9E51" :weight bold))
+        ("WAITING"   . (:foreground "#FFD150" :weight bold))
+        ("SOMEDAY"   . (:foreground "#B153D7" :weight bold))
+        ("FIX"       . (:foreground "#B9375D" :weight bold))
+        ("PROJ"      . (:foreground "#34699A" :weight bold))
+        ("DONE"      . (:foreground "#758A93" :weight bold))
+        ("REPEAT"      . (:foreground "#6984A9" :weight bold))
+        ("CANCELLED" . (:foreground "#758A93" :weight bold))))
+        )
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+  (use-package org-superstar  ;; Improved version of org-bullets
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+
+  ;; (setq org-startup-indented t)           ;; Indent according to section
+  ;; (setq org-startup-with-inline-images t) ;; Display images in-buffer by default
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+(after! org (setq org-habit-show-habits t))
+#+end_src
+* Atajos de teclado
+** Navegación entre ventanas, salvar archivo, etc
+#+begin_src emacs-lisp
+(setq-default evil-escape-key-sequence "jj")
+;; (map! :map general-override-mode-map :desc "Unbind s" :n "s" nil)
+(map! :map general-override-mode-map :desc "Save buffer" :n "ss" 'save-buffer)
+(map! :map general-override-mode-map :desc "Close buffer" :n "sq" 'evil-save-and-close)
+(map! :map general-override-mode-map :desc "Vertical Split" :n "so" 'evil-window-split)
+(map! :map general-override-mode-map :desc "Horizontal Split" :n "sv" 'evil-window-vsplit)
+(map! :map general-override-mode-map :desc "Delete Buffer" :n "sd" 'evil-delete-buffer)
+(map! :map general-override-mode-map :desc "Go Right Window" :n "sl" 'evil-window-right)
+(map! :map general-override-mode-map :desc "Go Left Window" :n "sh" 'evil-window-left)
+(map! :map general-override-mode-map :desc "Go Down Window" :n "sj" 'evil-window-down)
+(map! :map general-override-mode-map :desc "Go Up Window" :n "sk" 'evil-window-up)
+(map! :map general-override-mode-map :desc "Org Agenda" :n "sa" 'org-agenda)
+(map! :map general-override-mode-map :desc "Org Agenda" :n "sb" 'org-archive-subtree)
+(map! :map general-override-mode-map :desc "Toggle Term" :n "C-t" #'+vterm/toggle)
+(map! :map general-override-mode-map :desc "Toggle Term" :n "st" #'+vterm/toggle)
+(map! :map general-override-mode-map :desc "Toggle Term" :i "C-t" #'+vterm/toggle)
+(evil-set-initial-state 'magit-status-mode 'normal)
+(evil-define-key 'normal magit-status-mode-map "t" 'magit-stage-files)
+(evil-define-key 'insert 'global-map (kbd "C-j") 'evil-next-line)
+(evil-define-key 'insert 'global-map (kbd "C-k") 'evil-previous-line)
+(evil-define-key 'insert 'global-map (kbd "C-h") 'evil-backward-char)
+(evil-define-key 'insert 'global-map (kbd "C-l") 'evil-forward-char)
+#+end_src
+
+* Packages
+** Beacon
+#+begin_src emacs-lisp
+  (use-package beacon ;; This applies a beacon effect to the highlighted line
+     :config
+     (beacon-mode 1))
+#+end_src
+
+** Auto dim other buffers
+#+begin_src emacs-lisp :tangle yes
+  (use-package auto-dim-other-buffers
+  :config
+  (auto-dim-other-buffers-mode t))
+#+end_src
+** Captain
+#+begin_src emacs-lisp :tangle yes
+(use-package captain)
+
+(add-hook 'org-mode-hook #'captain-mode)
+(add-hook 'text-mode-hook
+          (lambda ()
+            (setq captain-predicate (lambda () t))))
+#+end_src

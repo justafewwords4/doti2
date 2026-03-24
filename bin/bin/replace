@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+import fileinput
+import sys
+
+import typer
+
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+
+app = typer.Typer(context_settings=CONTEXT_SETTINGS, no_args_is_help=True)
+
+
+def changeLine(file: str, oldStr: str, newStr: str):
+    """Cambia oldStr por newStr en el archivo file"""
+    for line in fileinput.input(file, inplace=1):
+        if oldStr in line:
+            line = newStr + "\n"
+        sys.stdout.write(line)
+
+
+@app.command()
+def short():
+    """Cambia HandleSuspendKey en `/etc/systemd/logind.conf`.\nHay que usar
+    sudo, o habrá problemas de permisos"""
+    changeLine(
+        "/etc/systemd/logind.conf", "HandleSuspendKey", "HandleSuspendKey=ignore"
+    )
+    print("Hecho")
+
+
+@app.command()
+def otro():
+    """Otro comando. Este no sirve para nada, pero si no hay dos comandos, no se
+    muestra la ayuda."""
+    print("Otro comando")
+
+
+if __name__ == "__main__":
+    app()

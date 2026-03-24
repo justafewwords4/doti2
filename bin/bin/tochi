@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+import os
+
+from rich import print
+
+
+def respalda():
+    origen = "/home/felipe/"
+    destino = "/run/media/felipe/TOCHIBA/"
+    parametros = "-avzh --mkpath --exclude __pycache__ --exclude venv --exclude .venv --exclude dist --exclude .git/ --exclude node_modules"
+    params2 = "-avzh --mkpath --exclude __pycache__ --exclude venv --exclude .venv --exclude dist --exclude .git/ --exclude node_modules --delete"
+
+    directory_for_params2 = [
+        "Documents/",
+    ]
+
+    directorios = [
+        "sites/",
+        "elFina/",
+        "vimwiki/",
+        "Pictures/",
+        "Music/",
+        "Dropbox/org/",
+        "Downloads/Telegram\ Desktop/",
+        "dev/",
+        ".hledger.journal",
+        ".finances.json",
+    ]
+
+    # directorios SIN parámetro --delete
+    for directorio in directorios:
+        print(
+            f"\nEnviando [bold green]{origen}{directorio}[/bold green] a [bold yellow]{destino}{directorio}[/bold yellow]"
+        )
+        os.system(f"rsync {parametros} {origen}{directorio} {destino}{directorio}")
+
+    # directorios CON parámetro --delete
+    for directorio in directory_for_params2:
+        print(
+            f"\nEnviando [bold green]{origen}{directorio}[/bold green] a [bold yellow]{destino}{directorio}[/bold yellow]"
+        )
+        os.system(f"rsync {params2} {origen}{directorio} {destino}{directorio}")
+    # rsync $PARAMETROS /home/felipe/.hledger.journal /run/media/felipe/TOCHIBA/hledger.journal
+
+
+if __name__ == "__main__":
+    respalda()

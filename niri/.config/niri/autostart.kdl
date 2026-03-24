@@ -1,0 +1,6 @@
+spawn-at-startup "/home/felipe/bin/emacs-start.sh"
+spawn-at-startup "/home/felipe/bin/backup.sh"
+spawn-at-startup "udiskie"
+spawn-at-startup "/home/felipe/qutebrowser/.venv/bin/qutebrowser" "https://web.whatsapp.com"
+spawn-at-startup "/home/felipe/Telegram/Telegram"
+spawn-at-startup "syncthing" "--no-browser"
