@@ -27,6 +27,39 @@ stow *
 
 Crea los enlaces para todos los directorios.
 
+## Comando para copiar clave ssh a otra computadora
+
+```sh
+ssh-copy-id root@10.10.0.5
+```
+
+## Configurar copytext.sh
+
+```sh
+mkdir /home/$(whoami)/tmp/
+```
+
+## Instalar n (npm)
+
+```sh
+sudo mkdir -p /usr/local/n
+sudo chown -R $(whoami) /usr/local/n
+sudo mkdir -p /usr/local/bin /usr/local/lib /usr/local/include /usr/local/share
+sudo chown -R \
+  $(whoami) /usr/local/bin /usr/local/lib /usr/local/include /usr/local/share
+sudo mkdir -p /usr/local/share/man/man1
+sudo chown -R $(whoami) /usr/local/share/man/man1
+
+curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
+npm install -g n
+```
+
+### Instalaciones npm
+
+```sh
+npm i -g stylelint js-beautify marked
+```
+
 ## autoenv
 
 <https://github.com/hyperupcall/autoenv>
@@ -56,49 +89,3 @@ crear un archivo llamado `.autoenv` con el siguiente contenido:
 ```sh
 source .venv/bin/activate
 ```
-
-## Si `yay` o `pacman` va lento
-
-```sh
-sudo pacman-mirrors --fasttrack && sudo pacman -Syu
-```
-
-## Comando para copiar clave ssh a otra computadora
-
-```sh
-ssh-copy-id root@10.10.0.5
-```
-
-## Para cambiar el tamaño del cursor
-
-```sh
-echo "Xcursor.size: 32" >> ~/.Xresources
-```
-
-## Configurar copytext.sh
-
-```sh
-mkdir /home/$(whoami)/tmp/
-```
-
-## Para instalar n (npm)
-
-```sh
-sudo mkdir -p /usr/local/n
-sudo chown -R $(whoami) /usr/local/n
-sudo mkdir -p /usr/local/bin /usr/local/lib /usr/local/include /usr/local/share
-sudo chown -R \
-  $(whoami) /usr/local/bin /usr/local/lib /usr/local/include /usr/local/share
-sudo mkdir -p /usr/local/share/man/man1
-sudo chown -R $(whoami) /usr/local/share/man/man1
-
-curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
-npm install -g n
-```
-
-### Instalaciones npm
-
-```sh
-npm i -g stylelint js-beautify marked
-```
-
