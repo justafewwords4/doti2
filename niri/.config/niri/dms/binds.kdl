@@ -104,10 +104,10 @@ binds {
     Mod+Shift+Down { move-window-down; }
     Mod+Shift+Equal { set-window-height "+10%"; }
     Mod+Shift+F { fullscreen-window; }
-    Mod+Shift+H { move-column-left; }
+    Mod+Shift+H { move-column-left-or-to-monitor-left; }
     Mod+Shift+J { move-window-down-or-to-workspace-down; }
     Mod+Shift+K { move-window-up-or-to-workspace-up; }
-    Mod+Shift+L { move-column-right; }
+    Mod+Shift+L { move-column-right-or-to-monitor-right; }
     Mod+Shift+Left { move-column-left; }
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+R { switch-preset-window-height; }
