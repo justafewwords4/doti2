@@ -108,6 +108,7 @@ binds {
     Mod+Shift+Equal { set-window-height "+10%"; }
     // Mod+Shift+F { fullscreen-window; }
     Mod+Shift+F hotkey-overlay-title="PcmanFM" { spawn "pcmanfm"; }
+    Mod+Shift+g hotkey-overlay-title="Gigolo" { spawn "gigolo"; }
     Mod+Shift+H { move-column-left-or-to-monitor-left; }
     Mod+Shift+J { move-window-down-or-to-workspace-down; }
     Mod+Shift+K { move-window-up-or-to-workspace-up; }
