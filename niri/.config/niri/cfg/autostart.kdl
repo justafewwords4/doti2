@@ -1,0 +1,11 @@
+// ────────────── Startup Applications ──────────────
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
+
+    spawn-sh-at-startup "qs -c noctalia-shell"
+
+    spawn-at-startup "/home/felipe/bin/emacs-start.sh"
+    spawn-at-startup "/home/felipe/bin/backup.sh"
+    spawn-at-startup "udiskie"
+    spawn-at-startup "Telegram"
+    spawn-at-startup "zapzap"
+    spawn-at-startup "syncthing" "--no-browser"
