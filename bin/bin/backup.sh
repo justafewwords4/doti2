@@ -8,8 +8,8 @@
 # cuando detecta cambios en los directorios de origen.
 
 # Directorio de destino para los respaldos
-DEST_DIR="/media/felipe/5A38DA46158C100F/backups"
-# DEST_DIR="/run/media/felipe/5A38DA46158C100F/backups"
+# DEST_DIR="/media/felipe/5A38DA46158C100F/backups"
+DEST_DIR="/run/media/felipe/5A38DA46158C100F/backups"
 
 # Directorios de origen que se respaldarán
 SOURCE_DIRS=(
@@ -35,7 +35,7 @@ SOURCE_DIRS=(
 # fi
 
 # Archivo de exclusión
-EXCLUDE_FILE="/home/felipe/doti/bin/bin/.rsyncignore"
+EXCLUDE_FILE="/home/felipe/bin/.rsyncignore"
 
 # Crear el directorio de destino si no existe
 mkdir -p "$DEST_DIR"
