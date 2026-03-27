@@ -12,3 +12,9 @@
 
         struts {}
     }
+
+    cursor {
+        xcursor-size 52
+        hide-when-typing
+        hide-after-inactive-ms 1000
+    }   
