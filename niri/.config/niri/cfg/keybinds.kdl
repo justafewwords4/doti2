@@ -10,7 +10,8 @@ binds {
 
     // ─── Applications ───
     Mod+Return                          hotkey-overlay-title="Open Terminal: Alacritty" { spawn "alacritty"; }
-    Mod+N                               hotkey-overlay-title="Emacs Client" { spawn "emacsclient" "-c"; }
+    Mod+Comma                          hotkey-overlay-title="Send to Scratchpad" { spawn "~/.cargo/bin/nirius" "scratchpad-toggle"; }
+    Mod+N                               hotkey-overlay-title="Emacs Client" { spawn "~/.cargo/bin/nirius" "scratchpad-show" "--app-id" "Emacs"; }
     Mod+P                     hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
     Mod+B                               hotkey-overlay-title="Open Browser: Brave" { spawn "brave"; }
     Mod+ALT+L                           hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
