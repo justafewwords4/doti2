@@ -8,8 +8,10 @@
 # cuando detecta cambios en los directorios de origen.
 
 # Directorio de destino para los respaldos
-DEST_DIR="/media/felipe/5A38DA46158C100F/backups"
-# DEST_DIR="/run/media/felipe/5A38DA46158C100F/backups"
+# para distros basadas en debian
+# DEST_DIR="/media/felipe/5A38DA46158C100F/backups"
+# para distros basadas en arch
+DEST_DIR="/run/media/felipe/5A38DA46158C100F/backups"
 
 # Directorios de origen que se respaldarán
 SOURCE_DIRS=(
