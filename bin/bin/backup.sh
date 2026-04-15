@@ -24,6 +24,7 @@ SOURCE_DIRS=(
   "$HOME/wallpapers"
   "$HOME/Dropbox"
   "$HOME/Sync"
+  "$HOME/dev"
 )
 
 # # Verificar si el disco está montado. Si no, intentar montarlo.
