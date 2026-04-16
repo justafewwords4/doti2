@@ -71,4 +71,5 @@ curl -fsSL https://opencode.ai/install | bash
 
 # gemini-cli
 npm install -g @google/gemini-cli
+
 cd
