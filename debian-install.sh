@@ -80,3 +80,13 @@ cd tdrop
 sudo make install
 
 cd
+
+echo "Atajos de teclado"
+echo "brave-browser              Super+B"
+echo "google-chrome              Super+C"
+echo "copytext.sh                Super+Y"
+echo "emacs_tdrop.sh             Super+N"
+echo "xfce4-popup-whiskermenu    Super+P"
+echo "xfce4-session-logout       Super+P"
+echo ""
+echo "PD: Falta instalar google-chrome"
