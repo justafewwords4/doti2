@@ -16,7 +16,8 @@ sudo apt install udiskie \
   tesseract-ocr tesseract-ocr-spa \
   lazygit \
   xdotool tmux tmuxinator tmuxp \
-  kitty
+  kitty \
+  python3-venv python3-pip
 
 echo "instalando flatpak"
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
