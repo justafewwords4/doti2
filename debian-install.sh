@@ -65,4 +65,10 @@ wget -O tsetup.6.7.6.tar.xz https://telegram.org/dl/desktop/linux
 7z x tsetup.6.7.6.tar
 mv Telegram ..
 
+# opencode
+
+curl -fsSL https://opencode.ai/install | bash
+
+# gemini-cli
+npm install -g @google/gemini-cli
 cd
