@@ -14,7 +14,8 @@ sudo apt install udiskie \
   xclip \
   wget \
   tesseract-ocr tesseract-ocr-spa \
-  lazygit
+  lazygit \
+  xdotool tmux tmuxinator tmuxp
 
 echo "instalando flatpak"
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -71,5 +72,11 @@ curl -fsSL https://opencode.ai/install | bash
 
 # gemini-cli
 npm install -g @google/gemini-cli
+
+# tdrop
+cd
+git clone https://github.com/noctuid/tdrop.git
+cd tdrop
+sudo make install
 
 cd
