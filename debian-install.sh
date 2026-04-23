@@ -44,10 +44,10 @@ npm install -g n
 npm i -g stylelint js-beautify marked
 
 # neovim
-echo "instalando neovim..."
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-sudo rm -rf /opt/nvim-linux-x86_64
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+# echo "instalando neovim..."
+# curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+# sudo rm -rf /opt/nvim-linux-x86_64
+# sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 
 echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >>~/.bashrc
 
@@ -56,17 +56,17 @@ echo "instalar zapzap..."
 flatpak install flathub com.rtosta.zapzap
 
 # bluetooth
-echo "instalando bluetooth..."
-sudo apt update
-sudo apt install bluetooth bluez bluez-tools bluez-firmware
-sudo systemctl enable --now bluetooth
-sudo apt install blueman
+# echo "instalando bluetooth..."
+# sudo apt update
+# sudo apt install bluetooth bluez bluez-tools bluez-firmware
+# sudo systemctl enable --now bluetooth
+# sudo apt install blueman
 
 cd ~/Downloads
-wget -O tsetup.6.7.6.tar.xz https://telegram.org/dl/desktop/linux
-7z x tsetup.6.7.6.tar.xz
-7z x tsetup.6.7.6.tar
-mv Telegram ..
+# wget -O tsetup.6.7.6.tar.xz https://telegram.org/dl/desktop/linux
+# 7z x tsetup.6.7.6.tar.xz
+# 7z x tsetup.6.7.6.tar
+# mv Telegram ..
 
 # opencode
 
