@@ -1,5 +1,5 @@
 [user]
-	name = Felipe
+	name = justafewwords4
 	email = 104157442+justafewwords4@users.noreply.github.com
 [core]
 	editor = nvim
@@ -12,3 +12,8 @@
 	st = status
 	last = log -1 HEAD
 	log = log --pretty=online
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
