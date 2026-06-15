@@ -9,9 +9,9 @@
 
 # Directorio de destino para los respaldos
 # para distros basadas en debian
-# DEST_DIR="/media/felipe/5A38DA46158C100F/backups"
+DEST_DIR="/media/felipe/5A38DA46158C100F/backups"
 # para distros basadas en arch
-DEST_DIR="/run/media/felipe/5A38DA46158C100F/backups"
+# DEST_DIR="/run/media/felipe/5A38DA46158C100F/backups"
 
 # Directorios de origen que se respaldarán
 SOURCE_DIRS=(
@@ -22,7 +22,6 @@ SOURCE_DIRS=(
   "$HOME/zettelkasten"
   "$HOME/Public"
   "$HOME/wallpapers"
-  "$HOME/Dropbox"
   "$HOME/Sync"
   "$HOME/dev"
 )
