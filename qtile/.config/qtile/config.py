@@ -664,7 +664,7 @@ screens = [
                 ),
                 # Right modules
                 widget.TextBox(
-                    text="󰋊",
+                    text="󰋊 DISK:",
                     foreground="#ffc107",
                     padding=6,
                     fontsize=18,
@@ -696,7 +696,7 @@ screens = [
                 ),
                 create_separator(),
                 widget.TextBox(
-                    text="󰍛",
+                    text="󰍛 MEM:",
                     foreground="#4fc3f7",
                     padding=6,
                     fontsize=18,
@@ -706,7 +706,7 @@ screens = [
                 ),
                 create_separator(),
                 widget.TextBox(
-                    text="󰻠",
+                    text="󰻠 CPU:",
                     foreground="#ff6b6b",
                     padding=6,
                     fontsize=18,
