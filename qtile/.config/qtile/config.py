@@ -810,6 +810,9 @@ floating_layout = layout.Floating(
         Match(wm_class="ssh-askpass"),  # ssh-askpass
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
+        Match(title="secrets"),  # secrets passwords
+        Match(title="blueman-manager"),  # secrets passwords
+        Match(title="localsend_app"),  # secrets passwords
     ],
 )
 auto_fullscreen = True
