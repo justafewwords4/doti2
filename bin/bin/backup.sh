@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # INSTALACIONES
 # sudo apt install rsync
