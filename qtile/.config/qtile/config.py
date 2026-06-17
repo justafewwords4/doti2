@@ -814,6 +814,7 @@ floating_layout = layout.Floating(
         Match(wm_class="blueman-manager"),  # secrets passwords
         Match(wm_class="Blueman-manager"),  # secrets passwords
         Match(wm_class="localsend_app"),  # secrets passwords
+        Match(wm_class="gnome-calculator"),  # secrets passwords
     ],
 )
 auto_fullscreen = True
