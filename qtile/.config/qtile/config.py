@@ -395,19 +395,19 @@ keys = [
     ),
     # === MEDIA & BRIGHTNESS ===
     Key(
-        [mod],
+        [mod, "mod1"],
         "F12",
         lazy.spawn(os.path.expanduser("~/.config/qtile/scripts/changevolume up")),
         desc="Volume up",
     ),
     Key(
-        [mod],
+        [mod, "mod1"],
         "F11",
         lazy.spawn(os.path.expanduser("~/.config/qtile/scripts/changevolume down")),
         desc="Volume down",
     ),
     Key(
-        [mod],
+        [mod, "mod1"],
         "F10",
         lazy.spawn(os.path.expanduser("~/.config/qtile/scripts/changevolume mute")),
         desc="Mute/Unmute",
