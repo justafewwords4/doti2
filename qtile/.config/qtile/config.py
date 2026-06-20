@@ -708,7 +708,8 @@ screens = [
                 create_separator(),
                 widget.TextBox(
                     text="󰻠 CPU:",
-                    foreground="#ff6b6b",
+                    # foreground="#ff6b6b",
+                    foreground="#4fc3f7",
                     padding=6,
                     fontsize=18,
                 ),
@@ -725,7 +726,9 @@ screens = [
                 create_separator(),
                 widget.Clock(
                     format="%-l:%M %p",
-                    foreground=colors[6][0],
+                    # foreground=colors[6][0],
+                    # foreground="#ff6b6b",
+                    foreground="#ffc107",
                     padding=6,
                 ),
                 create_separator(),

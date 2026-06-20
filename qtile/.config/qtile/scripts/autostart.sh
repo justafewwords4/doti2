@@ -4,7 +4,7 @@
 lxpolkit &
 
 # background
-feh --bg-fill /home/drew/.config/qtile/wallpaper/wallhaven-218x7m_3440x1440.png &
+feh --bg-fill /home/felipe/.config/qtile/wallpaper/wallhaven-ex63rk_3440x1440.png &
 
 # GTK live theme updates
 xsettingsd &
