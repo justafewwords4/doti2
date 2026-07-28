@@ -15,8 +15,8 @@
 #+begin_src emacs-lisp :tangle yes
 (after! org
 (setq org-todo-keywords
-    '((sequence "REPEAT(r)" "NEXT(n)" "TODO(t)"  "WAITING(w)" "SOMEDAY(s)" "PROJ(p)" "FIX(f)" "|" "DONE(d)" "CANCELLED(c)")))
-(setq org-deadline-warning-days 4))
+    '((sequence "REPEAT(r)" "NEXT(n)" "TODO(t)" "DOING(i)"  "WAITING(w)" "SOMEDAY(s)" "PROJ(p)" "FIX(f)" "|" "DONE(d)" "CANCELLED(c)")))
+(setq org-deadline-warning-days 2))
 
 (after! org
 (setq org-todo-keyword-faces
