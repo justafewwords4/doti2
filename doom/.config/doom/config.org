@@ -15,7 +15,7 @@
 #+begin_src emacs-lisp :tangle yes
 (after! org
 (setq org-todo-keywords
-    '((sequence "REPEAT(r)" "NEXT(n)" "TODO(t)" "DOING(i)"  "WAITING(w)" "SOMEDAY(s)" "PROJ(p)" "FIX(f)" "|" "DONE(d)" "CANCELLED(c)")))
+    '((sequence "TODO(t)" "REPEAT(r)" "NEXT(n)" "DOING(i)"  "WAITING(w)" "SOMEDAY(s)" "PROJ(p)" "FIX(f)" "|" "DONE(d)" "CANCELLED(c)")))
 (setq org-deadline-warning-days 2))
 
 (after! org
@@ -43,6 +43,17 @@
 
 #+begin_src emacs-lisp :tangle yes
 (after! org (setq org-habit-show-habits t))
+(setq org-habit-show-all-today t)
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+;; Org-habit
+(use-package! org-habit
+  :after org
+  :config
+  (setq org-habit-following-days 7
+        org-habit-preceding-days 35
+        org-habit-show-habits t)  )
 #+end_src
 * Atajos de teclado
 ** Navegación entre ventanas, salvar archivo, etc
