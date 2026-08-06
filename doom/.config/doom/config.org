@@ -9,6 +9,8 @@
 (setq display-line-numbers-type `relative)
 (setq org-ellipsis " ⤷")
 (setq org-directory "~/Sync/org")
+(setq doom-font (font-spec :family "UbuntuMono Nerd Font Propo" :size 18)
+      doom-variable-pitch-font (font-spec :family "UbuntuMono Nerd Font Propo" :size 18))
 #+end_src
 
 * Org Mode Stuff
@@ -20,8 +22,9 @@
 
 (after! org
 (setq org-todo-keyword-faces
-      '(("NEXT"      . (:foreground "#FA812F" :weight bold))
+      '(("NEXT"      . (:foreground "#FED24F" :weight bold))
         ("TODO"      . (:foreground "#6D9E51" :weight bold))
+        ("DOING"      . (:foreground "#007DCC" :weight bold))
         ("WAITING"   . (:foreground "#FFD150" :weight bold))
         ("SOMEDAY"   . (:foreground "#B153D7" :weight bold))
         ("FIX"       . (:foreground "#B9375D" :weight bold))
@@ -33,12 +36,34 @@
 #+end_src
 
 #+begin_src emacs-lisp :tangle no
-  (use-package org-superstar  ;; Improved version of org-bullets
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
 
+#+begin_src emacs-lisp :tangle no
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◇" "◇" "◇" "◇" "◇" "◇")))
+#+end_src
+
+#+begin_src emacs-lisp :tangle yes
+  ;; (use-package org-superstar  ;; Improved version of org-bullets
+  ;;   :config
+  ;;   (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+  ;;   :custom
+  ;;   (org-bullets-bullet-list '("◇" "◇" "◇" "◇" "◇" "◇" "◇"))
+  ;;   )
   ;; (setq org-startup-indented t)           ;; Indent according to section
   ;; (setq org-startup-with-inline-images t) ;; Display images in-buffer by default
+(after! org-modern
+  (setq org-modern-fold-stars
+        '(("▶" . "▼")
+          ("▶" . "▼")
+          ("▶" . "▼")
+          ("▶" . "▼")
+          ("▶" . "▼")))
+  (setq org-modern-replace-stars '("◉" "○" "◈" "◇" "▸")))
 #+end_src
 
 #+begin_src emacs-lisp :tangle yes
@@ -54,6 +79,17 @@
   (setq org-habit-following-days 7
         org-habit-preceding-days 35
         org-habit-show-habits t)  )
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+(use-package nerd-icons
+  :custom
+  ;; Set the font family to match your installed Nerd Font
+  (nerd-icons-font-family "UbuntuMono Nerd Font Propo")
+  ;; Automatically install the font if not present (Linux/macOS)
+  :config
+  (unless (find-font (font-spec :name "UbuntuMono Nerd Font Propo"))
+    (nerd-icons-install-fonts t)))
 #+end_src
 * Atajos de teclado
 ** Navegación entre ventanas, salvar archivo, etc

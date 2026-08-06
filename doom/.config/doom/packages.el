@@ -59,3 +59,4 @@
 (package! org-superstar)
 (package! evil-easymotion)
 (package! org-recur)
+(package! org-bullets)
