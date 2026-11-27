@@ -1,0 +1,194 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "pymupdf4llm>=0.2",
+# ]
+# ///
+"""Extrae el contenido de un archivo PDF y lo guarda en formato Markdown (.md)."""
+
+from __future__ import annotations
+
+import argparse
+import contextlib
+import io
+import sys
+from pathlib import Path
+
+with contextlib.redirect_stdout(io.StringIO()):
+    import pymupdf
+    import pymupdf4llm
+
+
+def parse_page_spec(spec: str, total_pages: int) -> list[int]:
+    """Convierte una especificación de páginas 1-based (ej. '1-3,5') a índices 0-based."""
+    pages: list[int] = []
+    seen: set[int] = set()
+
+    for raw_part in spec.split(","):
+        part = raw_part.strip()
+        if not part:
+            continue
+        if "-" in part:
+            bounds = part.split("-", 1)
+            if len(bounds) != 2 or not bounds[0].isdigit() or not bounds[1].isdigit():
+                raise ValueError(f"Rango de páginas inválido: '{part}'")
+            start, end = int(bounds[0]), int(bounds[1])
+            if start < 1 or end < start or end > total_pages:
+                raise ValueError(
+                    f"Rango de páginas fuera de límites ({part}); el PDF tiene {total_pages} página(s)."
+                )
+            for page_num in range(start, end + 1):
+                idx = page_num - 1
+                if idx not in seen:
+                    seen.add(idx)
+                    pages.append(idx)
+        else:
+            if not part.isdigit():
+                raise ValueError(f"Número de página inválido: '{part}'")
+            page_num = int(part)
+            if page_num < 1 or page_num > total_pages:
+                raise ValueError(
+                    f"Página {page_num} fuera de límites; el PDF tiene {total_pages} página(s)."
+                )
+            idx = page_num - 1
+            if idx not in seen:
+                seen.add(idx)
+                pages.append(idx)
+
+    if not pages:
+        raise ValueError("La especificación de páginas está vacía.")
+    return pages
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        prog="pdf2md",
+        description="Extrae el contenido de un archivo PDF y lo guarda en Markdown (.md).",
+    )
+    parser.add_argument(
+        "input",
+        type=Path,
+        help="Ruta del archivo PDF de entrada.",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default=None,
+        help=(
+            "Ruta del archivo Markdown de salida (usa '-' para stdout; "
+            "por defecto: mismo nombre con extensión .md)."
+        ),
+    )
+    parser.add_argument(
+        "--stdout",
+        action="store_true",
+        help="Imprime el Markdown en stdout sin crear archivo.",
+    )
+    parser.add_argument(
+        "--pages",
+        default=None,
+        help="Páginas a extraer (base 1), ej.: '1-3,5,8-10'.",
+    )
+    parser.add_argument(
+        "--write-images",
+        action="store_true",
+        help="Extrae imágenes embebidas y las enlaza desde el Markdown.",
+    )
+    parser.add_argument(
+        "--image-path",
+        type=Path,
+        default=None,
+        help="Directorio para guardar imágenes extraídas (implica --write-images).",
+    )
+    parser.add_argument(
+        "--page-separators",
+        action="store_true",
+        help="Incluye separadores entre páginas en el Markdown generado.",
+    )
+    return parser.parse_args(argv)
+
+
+def extract_pdf_to_markdown(
+    pdf_path: Path,
+    *,
+    pages_spec: str | None = None,
+    write_images: bool = False,
+    image_path: Path | None = None,
+    page_separators: bool = False,
+) -> str:
+    if not pdf_path.is_file():
+        raise FileNotFoundError(f"Archivo PDF no encontrado: {pdf_path}")
+
+    with contextlib.redirect_stdout(io.StringIO()):
+        with pymupdf.open(pdf_path) as doc:
+            if doc.is_encrypted and not doc.authenticate(""):
+                raise ValueError(f"El archivo PDF está protegido con contraseña: {pdf_path}")
+            if doc.page_count == 0:
+                raise ValueError(f"El archivo PDF no contiene páginas: {pdf_path}")
+
+            pages = parse_page_spec(pages_spec, doc.page_count) if pages_spec else None
+
+            kwargs: dict[str, object] = {
+                "pages": pages,
+                "write_images": write_images,
+                "page_separators": page_separators,
+                "show_progress": False,
+            }
+            if write_images and image_path is not None:
+                image_path.mkdir(parents=True, exist_ok=True)
+                kwargs["image_path"] = str(image_path)
+
+            md_text = pymupdf4llm.to_markdown(doc, **kwargs)
+
+    return md_text.strip() + "\n" if md_text.strip() else ""
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(sys.argv[1:] if argv is None else argv)
+    pdf_path = args.input.expanduser().resolve()
+    to_stdout = args.stdout or args.output == "-"
+
+    md_path: Path | None = None
+    if not to_stdout:
+        md_path = (
+            Path(args.output).expanduser().resolve()
+            if args.output is not None
+            else pdf_path.with_suffix(".md")
+        )
+
+    write_images = args.write_images or args.image_path is not None
+    image_path: Path | None = None
+    if write_images:
+        if args.image_path is not None:
+            image_path = args.image_path.expanduser().resolve()
+        else:
+            base = md_path if md_path is not None else pdf_path
+            image_path = base.parent / f"{base.stem}_images"
+
+    try:
+        md_text = extract_pdf_to_markdown(
+            pdf_path,
+            pages_spec=args.pages,
+            write_images=write_images,
+            image_path=image_path,
+            page_separators=args.page_separators,
+        )
+    except (FileNotFoundError, ValueError, RuntimeError, pymupdf.FileDataError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    if to_stdout:
+        sys.stdout.write(md_text)
+        return 0
+
+    assert md_path is not None
+    md_path.parent.mkdir(parents=True, exist_ok=True)
+    md_path.write_text(md_text, encoding="utf-8")
+    print(f"Markdown generado: {md_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

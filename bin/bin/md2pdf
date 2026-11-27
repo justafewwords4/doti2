@@ -1,0 +1,279 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#   "markdown>=3.7",
+#   "weasyprint>=62.0",
+# ]
+# ///
+"""Convierte un archivo Markdown (.md) en un archivo PDF."""
+
+from __future__ import annotations
+
+import argparse
+import html
+import sys
+from pathlib import Path
+
+import markdown
+from weasyprint import HTML
+
+BASE_CSS = """
+@page {
+    size: __PAGE_SIZE__;
+    margin: 1.8cm 1.6cm 2cm 1.6cm;
+    @bottom-right {
+        content: "Página " counter(page) " de " counter(pages);
+        font-family: "Inter", "Liberation Sans", "DejaVu Sans", sans-serif;
+        font-size: 8.5pt;
+        color: #6b7280;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", "Liberation Sans", "DejaVu Sans", sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    color: #1f2937;
+    margin: 0;
+}
+
+h1 {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 12pt 0;
+    padding-bottom: 6pt;
+    border-bottom: 2px solid #1f2937;
+}
+
+h2, h3, h4, h5, h6 {
+    color: #111827;
+    font-weight: 700;
+    margin: 14pt 0 6pt 0;
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+h2 { font-size: 12.5pt; }
+h3 { font-size: 11pt; }
+h4 {
+    font-size: 10.5pt;
+    padding-bottom: 3pt;
+    border-bottom: 1px solid #d1d5db;
+}
+
+p {
+    margin: 0 0 6pt 0;
+}
+
+ul, ol {
+    margin: 4pt 0 8pt 0;
+    padding-left: 16pt;
+}
+
+li {
+    margin-bottom: 4pt;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #d1d5db;
+    margin: 12pt 0;
+}
+
+a {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8pt 0 12pt 0;
+    font-size: 8.5pt;
+    table-layout: fixed;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+thead {
+    display: table-header-group;
+}
+
+tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+th {
+    background-color: #1f2937;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 6pt;
+    border: 1px solid #1f2937;
+}
+
+td {
+    padding: 5.5pt 6pt;
+    border: 1px solid #d1d5db;
+    vertical-align: top;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+em {
+    color: #4b5563;
+}
+
+code {
+    font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace;
+    font-size: 8.5pt;
+    background-color: #f3f4f6;
+    padding: 1pt 3pt;
+    border-radius: 2pt;
+}
+
+pre {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 4pt;
+    padding: 8pt;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+blockquote {
+    margin: 8pt 0;
+    padding: 6pt 10pt;
+    border-left: 3px solid #9ca3af;
+    background-color: #f9fafb;
+    color: #4b5563;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+"""
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        prog="md2pdf",
+        description="Convierte un archivo Markdown (.md) en un archivo PDF.",
+    )
+    parser.add_argument(
+        "input",
+        type=Path,
+        help="Ruta del archivo Markdown de entrada (.md).",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        default=None,
+        help="Ruta del archivo PDF de salida (por defecto: mismo nombre con extensión .pdf).",
+    )
+    parser.add_argument(
+        "--title",
+        default=None,
+        help="Título del documento PDF (por defecto: nombre del archivo).",
+    )
+    parser.add_argument(
+        "--page-size",
+        choices=("letter", "a4"),
+        default="letter",
+        help="Tamaño de página (por defecto: letter).",
+    )
+    parser.add_argument(
+        "--css",
+        type=Path,
+        default=None,
+        help="Archivo CSS adicional para personalizar estilos.",
+    )
+    return parser.parse_args(argv)
+
+
+def convert_markdown_to_pdf(
+    md_path: Path,
+    pdf_path: Path,
+    *,
+    title: str | None = None,
+    page_size: str = "letter",
+    extra_css_path: Path | None = None,
+) -> None:
+    if not md_path.is_file():
+        raise FileNotFoundError(f"Archivo Markdown no encontrado: {md_path}")
+
+    css = BASE_CSS.replace("__PAGE_SIZE__", page_size)
+    if extra_css_path is not None:
+        if not extra_css_path.is_file():
+            raise FileNotFoundError(f"Archivo CSS no encontrado: {extra_css_path}")
+        css = f"{css}\n{extra_css_path.read_text(encoding='utf-8')}"
+
+    md_text = md_path.read_text(encoding="utf-8")
+    body_html = markdown.markdown(
+        md_text,
+        extensions=["tables", "fenced_code", "sane_lists", "nl2br"],
+    )
+    doc_title = html.escape(title or md_path.stem)
+    full_html = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{doc_title}</title>
+  <style>{css}</style>
+</head>
+<body>
+{body_html}
+</body>
+</html>
+"""
+    pdf_path.parent.mkdir(parents=True, exist_ok=True)
+    HTML(string=full_html, base_url=str(md_path.parent)).write_pdf(str(pdf_path))
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(sys.argv[1:] if argv is None else argv)
+    md_path = args.input.expanduser().resolve()
+    pdf_path = (
+        args.output.expanduser().resolve()
+        if args.output is not None
+        else md_path.with_suffix(".pdf")
+    )
+    extra_css = args.css.expanduser().resolve() if args.css is not None else None
+
+    try:
+        convert_markdown_to_pdf(
+            md_path,
+            pdf_path,
+            title=args.title,
+            page_size=args.page_size,
+            extra_css_path=extra_css,
+        )
+    except FileNotFoundError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    print(f"PDF generado: {pdf_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
